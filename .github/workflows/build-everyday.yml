@@ -1,0 +1,29 @@
+name: Build new version everyday
+
+# Configures this workflow to run on a schedule (every day at midnight)
+on:
+  schedule:
+    - cron: '40 2 * * *'  # This will run every day at midnight UTC
+
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Generate and push a new tag based on the current date
+      - name: Generate and push a new tag
+        run: |
+          NEW_TAG=$(date +'%Y%m%d')
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
