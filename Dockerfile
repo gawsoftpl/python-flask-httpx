@@ -1,12 +1,10 @@
 # Wybieramy oficjalny obraz Pythona
 FROM python:3.13-alpine
 
-# Ustawiamy katalog roboczy
 WORKDIR /app
 
-# Instalujemy zależności
-RUN pip install Flask httpx "httpx[socks]"
+RUN pip install Flask httpx "httpx[socks]" gunicorn
 
 USER 1000
 
-CMD ["python", "/app/server.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "server:app"]
