@@ -7,9 +7,6 @@ WORKDIR /app
 # Instalujemy zależności
 RUN pip install Flask httpx "httpx[socks]"
 
-# Kopiujemy resztę aplikacji do obrazu
-COPY ../p .
-
 USER 1000
 
 CMD ["python", "/app/server.py"]
